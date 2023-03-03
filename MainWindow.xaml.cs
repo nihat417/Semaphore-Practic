@@ -21,10 +21,10 @@ public partial class MainWindow : Window
 {
 
 
-    Thread Cthread;
+    Thread thread;
     public Semaphore semaphore { get; set; }
     public int countSemaphore { get; set; }
-    public int count = 1;
+    
     public MainWindow()
     {
         InitializeComponent();
@@ -32,14 +32,14 @@ public partial class MainWindow : Window
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
+        
         semaphore = new Semaphore(1, 1, "SEMAPHORE");
 
         for (int i = 0; i < 3; i++)
         {
-            Cthread = new Thread(() => Simulation(semaphore));
-            ++count;
-            Cthread.Name = $"Thread -> {count}";
-            Dispatcher.Invoke(() => CreatedListbox.Items.Add(Cthread));
+            thread = new Thread(() => Simulation(semaphore));
+            thread.Name = thread.ManagedThreadId.ToString();
+            Dispatcher.Invoke(() => CreatedListbox.Items.Add(thread));
         }
     }
 
